@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: machine-failure-api
+    env: docker
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: MODEL_PATH
+        value: models/rf_robust.pkl
+      - key: FEATURE_NAMES_PATH
+        value: models/feature_names.pkl
+      - key: LOG_LEVEL
+        value: INFO
