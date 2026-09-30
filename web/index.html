@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Robust Machine Failure Prediction - OptiForge 2026">
+    <title>Machine Failure Prediction — OptiForge 2026</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0f172a; color: #e2e8f0;
+            line-height: 1.6; padding: 2rem;
+        }
+        main { max-width: 720px; margin: 0 auto; }
+        h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .subtitle { color: #94a3b8; margin-bottom: 2rem; }
+        form { display: grid; gap: 1rem; }
+        label { display: block; margin-bottom: 0.25rem; font-weight: 600; }
+        input, select {
+            width: 100%; padding: 0.75rem; border-radius: 6px;
+            border: 1px solid #334155; background: #1e293b;
+            color: #e2e8f0; font-size: 1rem;
+        }
+        button {
+            padding: 0.75rem 1.5rem; border-radius: 6px;
+            border: none; background: #3b82f6; color: white;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+        }
+        button:hover { background: #2563eb; }
+        #result { margin-top: 2rem; padding: 1.5rem;
+            background: #1e293b; border-radius: 8px; }
+        .risk-critical { color: #ef4444; font-weight: 700; }
+        .risk-warning { color: #f59e0b; font-weight: 700; }
+        .risk-normal { color: #10b981; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Machine Failure Prediction</h1>
+        <p class="subtitle">Robust under operating condition shift — OptiForge 2026</p>
+
+        <form id="predictForm">
+            <div>
+                <label for="type">Machine Type</label>
+                <select id="type" name="type" required>
+                    <option value="L">L (Low)</option>
+                    <option value="M" selected>M (Medium)</option>
+                    <option value="H">H (High)</option>
+                </select>
+            </div>
+            <div>
+                <label for="air_temperature">Air Temperature (K)</label>
+                <input type="number" id="air_temperature" step="0.1" value="298.1" required>
+            </div>
+            <div>
+                <label for="process_temperature">Process Temperature (K)</label>
+                <input type="number" id="process_temperature" step="0.1" value="308.6" required>
+            </div>
+            <div>
+                <label for="rotational_speed">Rotational Speed (rpm)</label>
+                <input type="number" id="rotational_speed" value="1551" required>
+            </div>
+            <div>
+                <label for="torque">Torque (Nm)</label>
+                <input type="number" id="torque" step="0.1" value="42.8" required>
+            </div>
+            <div>
+                <label for="tool_wear">Tool Wear (min)</label>
+                <input type="number" id="tool_wear" value="0" required>
+            </div>
+            <button type="submit">Predict Failure Risk</button>
+        </form>
+
+        <section id="result" hidden aria-live="polite"></section>
+    </main>
+
+    <script>
+        const form = document.getElementById('predictForm');
+        const result = document.getElementById('result');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                type: form.type.value,
+                air_temperature: parseFloat(form.air_temperature.value),
+                process_temperature: parseFloat(form.process_temperature.value),
+                rotational_speed: parseFloat(form.rotational_speed.value),
+                torque: parseFloat(form.torque.value),
+                tool_wear: parseFloat(form.tool_wear.value),
+            };
+            result.hidden = false;
+            result.textContent = 'Predicting...';
+
+            try {
+                const res = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                const json = await res.json();
+                const cls = 'risk-' + json.risk_level.toLowerCase();
+                result.innerHTML = `
+                    <h2>Failure Probability: ${(json.failure_probability * 100).toFixed(2)}%</h2>
+                    <p>Risk Level: <span class="${cls}">${json.risk_level}</span></p>
+                    <h3>Explanation</h3>
+                    <ul>${json.explanation.map(x => `<li>${x}</li>`).join('')}</ul>
+                    <h3>Recommendation</h3>
+                    <p>${json.recommendation}</p>
+                `;
+            } catch (err) {
+                result.textContent = 'Error: ' + err.message;
+            }
+        });
+    </script>
+</body>
+</html>
