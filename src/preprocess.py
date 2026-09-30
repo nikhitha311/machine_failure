@@ -51,6 +51,12 @@ def load_dataset(path="data/ai4i2020.csv"):
 
 
 def clean_and_encode(df):
+    """
+    Preprocess machine sensor data for failure prediction.
+    
+    Handles: air temperature, process temperature, RPM, torque, tool wear.
+    Removes: failure subtypes (TWF, HDF, PWF, OSF, RNF) to prevent data leakage.
+    """
     """Drop ID cols, encode Type, coerce numerics, handle missing."""
     drop_cols = []
     for c in df.columns:

@@ -36,7 +36,17 @@ def measure_inference_time(model, X, repeat=5):
 
 
 def create_shifted_dataset(X, sensor_cols, random_state=42):
-    """Controlled operating-condition shift."""
+    """
+    Simulate operating condition shift for robustness evaluation.
+    
+    Shifts applied:
+      - Air temperature: +5-10%
+      - Process temperature: +4-6%
+      - Torque: +8-12%
+      - Rotational speed: -3-7%
+      - Tool wear: +8-12%
+    """
+    
     rng = np.random.RandomState(random_state)
     Xs = X.copy()
 

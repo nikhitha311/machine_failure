@@ -1,10 +1,25 @@
 # Robust Machine Failure Prediction Under Operating Condition Shift
 ## SDG 9 Alignment: Industry, Innovation & Infrastructure
 
-This project contributes to UN SDG 9 by building resilient industrial
-infrastructure through predictive maintenance.
+## Problem Statement
 
-**Impact:**
+Industrial machines generate continuous sensor data — air temperature,
+process temperature, rotational speed (RPM), torque, and tool wear.
+Unexpected machine failures cause:
+
+- Production downtime (₹10+ lakhs per hour for large factories)
+- Emergency maintenance costs (3x planned maintenance)
+- Safety risks for operators
+- Material waste from aborted production runs
+
+The core challenge: Standard ML models predict failure well on training
+data but degrade severely when deployment operating conditions differ from
+training. A model trained on summer data fails silently when winter shifts
+temperature by 5-10%.
+
+Our solution: Predict machine failure AND measure robustness under
+operating condition shift — a critical gap in real-world predictive maintenance.
+Impact:
 - Prevents unexpected machine failures in manufacturing
 - Reduces production downtime and maintenance costs
 - Extends equipment lifespan through early intervention
