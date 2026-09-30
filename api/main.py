@@ -1,4 +1,3 @@
- 
 """
 FastAPI endpoint for machine failure prediction.
 OptiForge 2026 · Team code crafters (OPT-26-3407)
@@ -32,6 +31,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Serve static web UI
 if os.path.exists("web"):
     app.mount("/static", StaticFiles(directory="web"), name="static")
 
