@@ -10,8 +10,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN python -c "import os; os.makedirs('models', exist_ok=True)" && \
-    python scripts/train_and_save.py || echo "Model training skipped"
+#RUN python -c "import os; os.makedirs('models', exist_ok=True)" && \
+   # python scripts/train_and_save.py || echo "Model training skipped"
 
 EXPOSE 8000
 
