@@ -4,8 +4,8 @@ data/*.pkl
 !data/.gitkeep
 
 # Models
-models/*.pkl
-models/*.joblib
+#models/*.pkl
+#models/*.joblib
 !models/.gitkeep
 
 # Secrets
